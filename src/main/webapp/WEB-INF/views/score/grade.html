@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Chấm Điểm Project - PRJ301</title>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <style>
+            :root {
+                --primary: #3b82f6;
+                --primary-dark: #2563eb;
+                --primary-light: #60a5fa;
+                --bg-main: #0f172a;
+                --bg-card: #1e293b;
+                --bg-hover: #334155;
+                --text-primary: #f1f5f9;
+                --text-secondary: #94a3b8;
+                --border: #334155;
+                --success: #10b981;
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: 'Inter', sans-serif;
+                background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+                color: var(--text-primary);
+                min-height: 100vh;
+                padding: 20px;
+                position: relative;
+                overflow-x: hidden;
+            }
+
+            /* Animated background particles */
+            .particles {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 0;
+            }
+
+            .particle {
+                position: absolute;
+                width: 4px;
+                height: 4px;
+                background: rgba(59, 130, 246, 0.3);
+                border-radius: 50%;
+                animation: float 20s infinite;
+            }
+
+            @keyframes float {
+                0%, 100% {
+                    transform: translateY(0) translateX(0);
+                    opacity: 0;
+                }
+                10% {
+                    opacity: 1;
+                }
+                90% {
+                    opacity: 1;
+                }
+                100% {
+                    transform: translateY(-100vh) translateX(50px);
+                    opacity: 0;
+                }
+            }
+
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                background: var(--bg-card);
+                border-radius: 24px;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+                overflow: hidden;
+                position: relative;
+                z-index: 1;
+                animation: slideIn 0.6s ease-out;
+            }
+
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .header {
+                background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+                padding: 40px;
+                text-align: center;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .header::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+                animation: rotate 20s linear infinite;
+            }
+
+            @keyframes rotate {
+                from {
+                    transform: rotate(0deg);
+                }
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+
+            h1 {
+                font-size: 2.5em;
+                font-weight: 700;
+                margin-bottom: 10px;
+                position: relative;
+                z-index: 1;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            }
+
+            h2 {
+                font-size: 1.3em;
+                font-weight: 400;
+                opacity: 0.95;
+                position: relative;
+                z-index: 1;
+            }
+
+            .info-section {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 20px;
+                padding: 30px 40px;
+                background: var(--bg-main);
+            }
+
+            .info-card {
+                background: var(--bg-card);
+                padding: 20px;
+                border-radius: 16px;
+                border: 1px solid var(--border);
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .info-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 4px;
+                height: 100%;
+                background: var(--primary);
+                transition: width 0.3s ease;
+            }
+
+            .info-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+                border-color: var(--primary);
+            }
+
+            .info-card:hover::before {
+                width: 100%;
+                opacity: 0.1;
+            }
+
+            .info-label {
+                color: var(--text-secondary);
+                font-size: 0.85em;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                margin-bottom: 5px;
+            }
+
+            .info-value {
+                color: var(--text-primary);
+                font-size: 1.1em;
+                font-weight: 600;
+            }
+
+            .table-container {
+                padding: 0 40px 40px;
+                overflow-x: auto;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: separate;
+                border-spacing: 0;
+            }
+
+            thead {
+                position: sticky;
+                top: 0;
+                z-index: 10;
+            }
+
+            th {
+                background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+                padding: 18px;
+                text-align: left;
+                font-weight: 600;
+                font-size: 0.95em;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                border-bottom: 2px solid var(--primary-light);
+            }
+
+            th:first-child {
+                border-radius: 12px 0 0 0;
+            }
+            th:last-child {
+                border-radius: 0 12px 0 0;
+            }
+
+            tbody tr {
+                transition: all 0.3s ease;
+                animation: fadeInRow 0.5s ease-out backwards;
+            }
+
+            tbody tr:nth-child(n) {
+                animation-delay: calc(0.05s * var(--row-index, 0));
+            }
+
+            @keyframes fadeInRow {
+                from {
+                    opacity: 0;
+                    transform: translateX(-20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+
+            tbody tr:hover {
+                background: var(--bg-hover);
+                transform: scale(1.01);
+                box-shadow: 0 5px 20px rgba(59, 130, 246, 0.15);
+            }
+
+            td {
+                padding: 18px;
+                border-bottom: 1px solid var(--border);
+                transition: all 0.3s ease;
+            }
+
+            .section-header {
+                background: linear-gradient(135deg, var(--primary), var(--primary-light));
+                color: white;
+                font-weight: 700;
+                text-align: center;
+                padding: 20px !important;
+                font-size: 1.2em;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                position: relative;
+                animation: pulse 2s ease-in-out infinite;
+            }
+
+            @keyframes pulse {
+                0%, 100% {
+                    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+                }
+                50% {
+                    box-shadow: 0 0 20px 10px rgba(59, 130, 246, 0);
+                }
+            }
+
+            .feature-name {
+                font-weight: 600;
+                color: var(--primary-light);
+                font-size: 1em;
+            }
+
+            /* Custom Checkbox */
+            .checkbox-wrapper {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            input[type="checkbox"] {
+                appearance: none;
+                width: 28px;
+                height: 28px;
+                border: 2px solid var(--border);
+                border-radius: 8px;
+                cursor: pointer;
+                position: relative;
+                transition: all 0.3s ease;
+                background: var(--bg-main);
+            }
+
+            input[type="checkbox"]:hover {
+                border-color: var(--primary);
+                transform: scale(1.1);
+            }
+
+            input[type="checkbox"]:checked {
+                background: linear-gradient(135deg, var(--success), #059669);
+                border-color: var(--success);
+                animation: checkBounce 0.4s ease;
+            }
+
+            @keyframes checkBounce {
+                0%, 100% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.2);
+                }
+            }
+
+            input[type="checkbox"]:checked::after {
+                content: '✓';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: white;
+                font-size: 18px;
+                font-weight: bold;
+            }
+
+            input[type="text"] {
+                width: 100%;
+                padding: 12px;
+                background: var(--bg-main);
+                border: 2px solid var(--border);
+                border-radius: 8px;
+                color: var(--text-primary);
+                font-size: 0.9em;
+                transition: all 0.3s ease;
+            }
+
+            input[type="text"]:focus {
+                outline: none;
+                border-color: var(--primary);
+                background: var(--bg-card);
+                box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+            }
+
+            input[type="text"]::placeholder {
+                color: var(--text-secondary);
+            }
+
+            /* Progress indicator */
+            .progress-bar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 4px;
+                background: var(--bg-card);
+                z-index: 1000;
+            }
+
+            .progress-fill {
+                height: 100%;
+                background: linear-gradient(90deg, var(--primary-dark), var(--primary-light));
+                width: 0%;
+                transition: width 0.3s ease;
+            }
+
+            /* Scrollbar */
+            ::-webkit-scrollbar {
+                width: 10px;
+                height: 10px;
+            }
+
+            ::-webkit-scrollbar-track {
+                background: var(--bg-main);
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background: var(--primary);
+                border-radius: 10px;
+            }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: var(--primary-light);
+            }
+
+            /* Stats badge */
+            .stats-badge {
+                position: fixed;
+                bottom: 30px;
+                right: 30px;
+                background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+                color: white;
+                padding: 15px 25px;
+                border-radius: 50px;
+                font-weight: 600;
+                box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+                z-index: 100;
+                animation: slideInRight 0.6s ease-out;
+            }
+
+            @keyframes slideInRight {
+                from {
+                    opacity: 0;
+                    transform: translateX(100px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+
+            /* Adjust column widths */
+            td:nth-child(1) {
+                width: 35%;
+            }
+            td:nth-child(2) {
+                width: 15%;
+                text-align: center;
+            }
+            td:nth-child(3) {
+                width: 50%;
+            }
+
+            @media (max-width: 768px) {
+                .container {
+                    border-radius: 0;
+                }
+                .header {
+                    padding: 30px 20px;
+                }
+                h1 {
+                    font-size: 1.8em;
+                }
+                .info-section, .table-container {
+                    padding: 20px;
+                }
+                .stats-badge {
+                    bottom: 20px;
+                    right: 20px;
+                    font-size: 0.9em;
+                    padding: 12px 20px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="particles" id="particles"></div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="container">
+            <div class="header">
+                <h1>🎓 PHIẾU CHẤM ĐIỂM DỰ ÁN MÔN HỌC</h1>
+                <h2>Java Web Application Development (PRJ301)</h2>
+            </div>
+
+            <div class="info-section">
+                <div class="info-card">
+                    <div class="info-label">Chủ đề</div>
+                    <div class="info-value">🏨 HOTEL MANAGEMENT</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">Giảng viên</div>
+                    <div class="info-value">👩‍🏫 Thân Thị Ngọc Vân</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">Sinh viên</div>
+                    <div class="info-value">👨‍🎓 Dương Phạm Trọng Nghĩa</div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Chức năng</th>
+                            <th>Hoàn thành</th>
+                            <th>Ghi chú của Giảng viên</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Guest Features -->
+                        <tr>
+                            <td colspan="3" class="section-header">🎯 Student 1: Feature Guest</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Login guest</td>
+                            <td><div class="checkbox-wrapper"><input type="checkbox" onchange="updateProgress()"></div></td>
+                            <td><input type="text" placeholder="Nhận xét..."></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Register guest</td>
+                            <td><div class="checkbox-wrapper"><input type="checkbox" onchange="updateProgress()"></div></td>
+                            <td><input type="text" placeholder="Nhận xét..."></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Logout</td>
+                            <td><div class="checkbox-wrapper"><input type="checkbox" onchange="updateProgress()"></div></td>
+                            <td><input type="text" placeholder="Nhận xét..."></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Search available rooms</td>
+                            <td><div class="checkbox-wrapper"><input type="checkbox" onchange="updateProgress()"></div></td>
+                            <td><input type="text" placeholder="Nhận xét..."></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Booking room</td>
+                            <td><div class="checkbox-wrapper"><input type="checkbox" onchange="updateProgress()"></div></td>
+                            <td><input type="text" placeholder="Nhận xét..."></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Booking service</td>
+                            <td><div class="checkbox-wrapper"><input type="checkbox" onchange="updateProgress()"></div></td>
+                            <td><input type="text" placeholder="Nhận xét..."></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Payment when Booking service</td>
+                            <td><div class="checkbox-wrapper"><input type="checkbox" onchange="updateProgress()"></div></td>
+                            <td><input type="text" placeholder="Nhận xét..."></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Payment after booking service</td>
+                            <td><div class="checkbox-wrapper"><input type="checkbox" onchange="updateProgress()"></div></td>
+                            <td><input type="text" placeholder="Nhận xét..."></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">View history bookings</td>
+                            <td><div class="checkbox-wrapper"><input type="checkbox" onchange="updateProgress()"></div></td>
+                            <td><input type="text" placeholder="Nhận xét..."></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">View detail booking</td>
+                            <td><div class="checkbox-wrapper"><input type="checkbox" onchange="updateProgress()"></div></td>
+                            <td><input type="text" placeholder="Nhận xét..."></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Edit booking</td>
+                            <td><div class="checkbox-wrapper"><input type="checkbox" onchange="updateProgress()"></div></td>
+                            <td><input type="text" placeholder="Nhận xét..."></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Send Mail when user create account</td>
+                            <td><div class="checkbox-wrapper"><input type="checkbox" onchange="updateProgress()"></div></td>
+                            <td><input type="text" placeholder="Nhận xét..."></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Send Mail when user create new or edit booking</td>
+                            <td><div class="checkbox-wrapper"><input type="checkbox" onchange="updateProgress()"></div></td>
+                            <td><input type="text" placeholder="Nhận xét..."></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Send Mail when user check out</td>
+                            <td><div class="checkbox-wrapper"><input type="checkbox" onchange="updateProgress()"></div></td>
+                            <td><input type="text" placeholder="Nhận xét..."></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Add service</td>
+                            <td><div class="checkbox-wrapper"><input type="checkbox" onchange="updateProgress()"></div></td>
+                            <td><input type="text" placeholder="Nhận xét..."></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Cancel Service</td>
+                            <td><div class="checkbox-wrapper"><input type="checkbox" onchange="updateProgress()"></div></td>
+                            <td><input type="text" placeholder="Nhận xét..."></td>
+                        </tr>
+
+                        <!-- Admin Features -->
+                        <tr>
+                            <td colspan="3" class="section-header">⚙️ Student 1: Feature Admin</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Login</td>
+                            <td><div class="checkbox-wrapper"><input type="checkbox" onchange="updateProgress()"></div></td>
+                            <td><input type="text" placeholder="Nhận xét..."></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Logout</td>
+                            <td><div class="checkbox-wrapper"><input type="checkbox" onchange="updateProgress()"></div></td>
+                            <td><input type="text" placeholder="Nhận xét..."></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">CRUD Staff</td>
+                            <td><div class="checkbox-wrapper"><input type="checkbox" onchange="updateProgress()"></div></td>
+                            <td><input type="text" placeholder="Nhận xét..."></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Search Staff</td>
+                            <td><div class="checkbox-wrapper"><input type="checkbox" onchange="updateProgress()"></div></td>
+                            <td><input type="text" placeholder="Nhận xét..."></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">View and add service</td>
+                            <td><div class="checkbox-wrapper"><input type="checkbox" onchange="updateProgress()"></div></td>
+                            <td><input type="text" placeholder="Nhận xét..."></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">CRUD system config</td>
+                            <td><div class="checkbox-wrapper"><input type="checkbox" onchange="updateProgress()"></div></td>
+                            <td><input type="text" placeholder="Nhận xét..."></td>
+                        </tr>
+
+                        <!-- Bonus Features -->
+                        <tr>
+                            <td colspan="3" class="section-header">⭐ Student 1: Bonus Feature</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Filter admin page</td>
+                            <td><div class="checkbox-wrapper"><input type="checkbox" onchange="updateProgress()"></div></td>
+                            <td><input type="text" placeholder="Nhận xét..."></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Send mail</td>
+                            <td><div class="checkbox-wrapper"><input type="checkbox" onchange="updateProgress()"></div></td>
+                            <td><input type="text" placeholder="Nhận xét..."></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="stats-badge" id="statsBadge">
+            ✅ Hoàn thành: <span id="completedCount">0</span>/<span id="totalCount">0</span>
+        </div>
+
+        <script>
+            // Create animated particles
+            function createParticles() {
+                const particlesContainer = document.getElementById('particles');
+                const particleCount = 30;
+
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 20 + 's';
+                    particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                    particlesContainer.appendChild(particle);
+                }
+            }
+
+            // Update progress bar and stats
+            function updateProgress() {
+                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+                const total = checkboxes.length;
+                const percentage = (checked / total) * 100;
+
+                document.getElementById('progressFill').style.width = percentage + '%';
+                document.getElementById('completedCount').textContent = checked;
+                document.getElementById('totalCount').textContent = total;
+
+                // Animate the badge
+                const badge = document.getElementById('statsBadge');
+                badge.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    badge.style.transform = 'scale(1)';
+                }, 200);
+            }
+
+            // Add row animation indices
+            function setupAnimations() {
+                const rows = document.querySelectorAll('tbody tr');
+                rows.forEach((row, index) => {
+                    row.style.setProperty('--row-index', index);
+                });
+            }
+
+            // Input focus effects
+            document.querySelectorAll('input[type="text"]').forEach(input => {
+                input.addEventListener('focus', function () {
+                    this.parentElement.style.transform = 'scale(1.02)';
+                });
+
+                input.addEventListener('blur', function () {
+                    this.parentElement.style.transform = 'scale(1)';
+                });
+            });
+
+            // Initialize
+            window.addEventListener('DOMContentLoaded', () => {
+                createParticles();
+                setupAnimations();
+                updateProgress();
+            });
+
+            // Checkbox animation on click
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function () {
+                    if (this.checked) {
+                        // Create ripple effect
+                        const ripple = document.createElement('div');
+                        ripple.style.position = 'absolute';
+                        ripple.style.width = '40px';
+                        ripple.style.height = '40px';
+                        ripple.style.background = 'rgba(16, 185, 129, 0.3)';
+                        ripple.style.borderRadius = '50%';
+                        ripple.style.pointerEvents = 'none';
+                        ripple.style.animation = 'ripple 0.6s ease-out';
+
+                        const rect = this.getBoundingClientRect();
+                        ripple.style.left = (rect.left + rect.width / 2 - 20) + 'px';
+                        ripple.style.top = (rect.top + rect.height / 2 - 20) + 'px';
+
+                        document.body.appendChild(ripple);
+
+                        setTimeout(() => {
+                            ripple.remove();
+                        }, 600);
+                    }
+                });
+            });
+
+            // Add ripple animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes ripple {
+                    0% {
+                        transform: scale(0);
+                        opacity: 1;
+                    }
+                    100% {
+                        transform: scale(2);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        </script>
+    </body>
+</html>

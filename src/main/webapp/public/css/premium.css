@@ -1,0 +1,55 @@
+:root {
+  --primary-gold: #c5a059;
+  --dark-gold: #a68545;
+  --premium-black: #0a0a0a;
+  --premium-gray: #1a1a1a;
+  --text-light: #f5f5f5;
+  --text-muted: #a0a0a0;
+  --glass: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: var(--premium-black);
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4,
+.premium-font {
+  font-family: "Playfair Display", serif;
+  letter-spacing: 1px;
+}
+
+.glass-card {
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 15px;
+  padding: 2rem;
+  transition: transform 0.3s ease;
+}
+
+.navbar {
+  background: rgba(10, 10, 10, 0.8) !important;
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.btn-premium {
+  background: var(--primary-gold);
+  color: white;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 5px;
+  transition: all 0.3s;
+}
+
+.btn-premium:hover {
+  background: var(--dark-gold);
+  transform: scale(1.05);
+}
